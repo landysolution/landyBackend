@@ -48,7 +48,7 @@ const SteamReturn = (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         sameSite: "lax",
-        secure: false,
+        secure: true,
       });
 
       res.redirect(process.env.FRONT_TEST);

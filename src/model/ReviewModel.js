@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 
-const ReviewSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  content: { type: String, required: true },
-  rating: { type: Number, min: 0, max: 5, required: true },
-  cafeId: { type: Number, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+const ReviewSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    content: { type: String, required: true },
+    rating: { type: Number, min: 1, max: 10, required: true },
+    cafeId: { type: Number, required: true },
+  },
+  { timestamps: true }
+);
 
 ReviewSchema.index({ cafeId: 1 });
 
