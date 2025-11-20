@@ -1,8 +1,8 @@
 import ReviewModel from "../../model/ReviewModel.js";
-
+import { updateCafeRating } from "../cache/updateCafeRating.js";
 const PostComment = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log(req.params.id);
     
     const { content, rating } = req.body;
 
@@ -14,8 +14,12 @@ const PostComment = async (req, res) => {
     });
 
     await newReview.save();
+    // await updateCafeRating({
+    //   rating: Number(rating),
+    //   cafeId: req.params.id,
+    // });
 
-    // Populate user so frontend gets avatar + username immediately
+
     const populatedReview = await ReviewModel.findById(newReview._id).populate(
       "user",
       "username avatar steamId profileUrl"
@@ -26,6 +30,8 @@ const PostComment = async (req, res) => {
     console.error(err);
     return res.status(500).json({ error: "Server error" });
   }
+ 
+
 };
 
 export default PostComment;

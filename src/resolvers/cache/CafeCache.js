@@ -18,6 +18,14 @@ export const preloadCafeCache = async () => {
         `⚡ Loaded ${cafeCache.length} cafes from MongoDB into memory and Redis`
       );
     }
+
+
+
+
+
+
+
+
   } catch (err) {
     console.error("❌ Failed to load cafe cache:", err);
     cafeCache = [];

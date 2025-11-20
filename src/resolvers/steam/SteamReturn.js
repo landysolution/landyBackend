@@ -44,14 +44,13 @@ const SteamReturn = (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "7d" }
       );
-      
+
       res.cookie("token", token, {
         httpOnly: true,
         sameSite: "lax",
         secure: true,
       });
-
-      res.redirect(process.env.FRONT_TEST);
+     res.redirect(process.env.FRONT_TEST)
     } catch (e) {
       res
         .status(500)
