@@ -50,7 +50,8 @@ const SteamReturn = (req, res) => {
         sameSite: "lax",
         secure: true,
       });
-     res.redirect(process.env.FRONT_TEST)
+      // const redirectTo = req.query.redirect || "/";
+      res.redirect(process.env.FRONT_TEST);
     } catch (e) {
       res
         .status(500)
