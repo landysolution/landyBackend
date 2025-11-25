@@ -48,15 +48,11 @@ const PostComment = async (req, res) => {
       return res.status(400).json({ error: "Comment content cannot be empty" });
     }
 
-    const ratingNum = Number(rating);
-    if (!ratingNum || ratingNum < 1 || ratingNum > 5) {
-      return res.status(400).json({ error: "Rating must be a number between 1 and 5" });
-    }
+ 
 
-    // Save review to MongoDB
     const newReview = new ReviewModel({
       content,
-      rating: ratingNum,
+      rating: rating,
       cafeId: String(cafeId).trim(),
       user: req.user._id,
     });
