@@ -1,0 +1,1 @@
+export const icafeUrl = 'https://api.icafecloud.com'
