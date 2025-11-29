@@ -18,7 +18,8 @@ const {cafeId,search_text} = req.query
     );
 console.log(response.data);
 
-    return res.json(response.data)
+    // return res.json(response.data)
+    return
   } catch (err) {
     console.error("Error fetching members:", err.response?.data || err.message);
     return null;

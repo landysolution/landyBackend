@@ -53,7 +53,7 @@ const PostComment = async (req, res) => {
     const newReview = new ReviewModel({
       content,
       rating: rating,
-      cafeId: String(cafeId).trim(),
+      cafeId: cafeId,
       user: req.user._id,
     });
 
