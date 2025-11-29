@@ -2,7 +2,7 @@
 import axios from "axios";
 export const GetMembers =async (req,res) =>{
 console.log(res,'res from front');
-const {cafeId,search_text} = req.body
+const {cafeId,search_text} = req.query
  try {
     const response = await axios.get(
       `/api/v2/cafe/${cafeId}/members/action/suggestMembers`,
@@ -12,7 +12,7 @@ const {cafeId,search_text} = req.body
           Authorization: `Bearer ${process.env.NEXUS_KEY}`,
         },
         params: {
-          search_text: search_text
+          search_text
         },
       }
     );
