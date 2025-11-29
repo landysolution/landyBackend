@@ -16,6 +16,7 @@ const {cafeId,search_text} = req.body
         },
       }
     );
+console.log(response.data);
 
     return res.json(response.data)
   } catch (err) {

@@ -29,7 +29,6 @@ export const updateCafeRating = async ({ cafeId, rating }) => {
   // Ensure primitives are stored
   await redis.hset(AVG_KEY, id, avg.toFixed(2));
 
-  console.log("Updated cafe rating:", { id, sum: newSum, count: newCount, avg: avg.toFixed(2) });
 
   return {
     cafeId: id,
