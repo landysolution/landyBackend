@@ -1,37 +1,36 @@
 import axios from "axios";
 import redisClient from "../cache/RedisClient.js";
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const pcs = require("./pcs.json"); // safe in ESM, CommonJS, nodemon, Node 22
-
-// const CACHE_TTL = 900
 
 const GetPcs = async (req, res) => {
   try {
-    // const CAFE_ID = req.params.id;
-    // if (!CAFE_ID) {
-    //   return res.status(400).json({ error: "Missing cafeId" });
-    // }
+    const CAFE_ID = req.params.id;
+    if (!CAFE_ID) {
+      return res.status(400).json({ error: "Missing cafeId" });
+    }
+axios.interceptors.request.use(request => {
+  console.log("Outgoing request:");
+  console.log("URL:", request.url);
+  console.log("Method:", request.method);
+  console.log("Headers:", request.headers);
+  return request;
+});
+    const response = await axios.get(
+      `https://api.icafecloud.com/api/v2/cafe/${CAFE_ID}/pcs`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXUS_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    // const CACHE_KEY = `${CAFE_ID}_pcs`;
+    // Log the raw response from the API
+    console.log("RAW API RESPONSE:", response.data);
 
-    // const cachedData = await redisClient.get(CACHE_KEY);
-    // if (cachedData) {
-    //   console.log("[CACHE HIT]", CAFE_ID);
-    //   return res.status(200).json(JSON.parse(cachedData));
-    // }
 
-    // const response = await axios.get(
-    //   `https://api.icafecloud.com/api/v2/cafe/${CAFE_ID}/pcs`,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${process.env.NEXUS_KEY}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-
-    // const pcs = response.data;
+    // Make sure it's an array before mapping
+    const pcs = Array.isArray(response.data) ? response.data : [];
+    console.log("PCS ARRAY:", pcs);
 
     const filtered = pcs.map((pc) => ({
       pc_name: pc.pc_name,
@@ -42,11 +41,6 @@ const GetPcs = async (req, res) => {
       pc_box_left: pc.pc_box_left,
     }));
 
-    // await redisClient.set(CACHE_KEY, JSON.stringify(filtered), {
-    //   EX: CACHE_TTL,
-    // });
-
-    // console.log("[CACHE MISS] fetched from API", CAFE_ID);
     return res.status(200).json(filtered);
   } catch (err) {
     console.error(err.response?.data || err.message);

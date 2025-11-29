@@ -48,8 +48,9 @@ const PostComment = async (req, res) => {
       return res.status(400).json({ error: "Comment content cannot be empty" });
     }
 
- 
+  
 
+    // Save review to MongoDB
     const newReview = new ReviewModel({
       content,
       rating: rating,
@@ -60,7 +61,7 @@ const PostComment = async (req, res) => {
     await newReview.save();
 
     // Update Redis cache safely
-    await updateCafeRating({ cafeId, rating: ratingNum });
+    // await updateCafeRating({ cafeId, rating: ratingNum });
 
     // Populate user info
     const populatedReview = await ReviewModel.findById(newReview._id).populate(
