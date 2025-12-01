@@ -10,7 +10,7 @@ const route = express.Router();
 
 route.get("/", GetCafes);
 route.get("/pcs/:id", GetPcs);
-route.get("/comments", GetComments);
+route.get("/comments/:id", GetComments);
 route.post("/commentPost/:id", ProfileMW, PostComment);
 route.get("/members", GetMember);
 route.post("/topup", TopUp);

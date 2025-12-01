@@ -2,7 +2,7 @@ import ReviewModel from "../../model/ReviewModel.js";
 
 const GetComments = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
     const page = parseInt(req.query.page) || 1; // default page 1
     const limit = 3;                           // comments per page
     const skip = (page - 1) * limit;

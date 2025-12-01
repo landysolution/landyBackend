@@ -16,7 +16,11 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: process.env.FRONT_TEST,
+    origin: [
+      "https://www.landy.mn",
+      "https://landy.mn",
+      "http://localhost:3000"
+    ],
     credentials: true,
   })
 );
