@@ -7,7 +7,7 @@ import CafeRoute from "./route/CafeRoute.js";
 import SteamRoute from "./route/SteamRoute.js";
 import UserRoute from "./route/UserRoute.js";
 import cookieParser from "cookie-parser";
-
+import memberRoute from './route/MemberRoute.js'
 dotenv.config();
 const app = express();
 preloadCafeCache();
@@ -33,7 +33,7 @@ mongoose
 app.use("/cafe", CafeRoute);
 app.use("/steam", SteamRoute);
 app.use("/auth", UserRoute);
-
+app.use('/member',memberRoute)
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => console.log("app is running on", PORT));
