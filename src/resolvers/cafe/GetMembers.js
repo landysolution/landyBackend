@@ -12,11 +12,13 @@ const {cafeId,search_text} = req.query
           Authorization: `Bearer ${process.env.NEXUS_KEY}`,
         },
         params: {
-          search_text
+          search_text : search_text
         },
       }
     );
+
 console.log(response.data);
+
 
     return res.json(response.data)
   } catch (err) {
