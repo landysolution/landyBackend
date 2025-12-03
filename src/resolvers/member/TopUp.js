@@ -10,7 +10,7 @@ const TopUp = async (req, res) => {
     const { amount, topup_ids } = req.body;
 
     // Call QPay API
-    const { data } = await axios.post(
+    const response = await axios.post(
       "https://quickqr.qpay.mn/v2/invoice",
       {
         merchant_id: "ceb700d2-a8c6-4db1-a5ae-f7742124b457",
@@ -45,7 +45,7 @@ const TopUp = async (req, res) => {
     //   topup_ids: topup_ids,
     // });
 
-    res.status(200).json({ success: true, invoice: data });
+    res.status(200).json({ success: true, invoice: response.data });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: err.message });
