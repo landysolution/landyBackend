@@ -3,58 +3,58 @@ import axios from "axios";
 
 // --- TopUp Function ---
 const TopUp = async (req, res) => {
-  try {
-    const { amount, topup_ids } = req.body;
+//   try {
+//     const { amount, topup_ids } = req.body;
 
-    // Call QPay API
-    const response = await axios.post(
-      "https://quickqr.qpay.mn/v2/invoice",
-      {
-        merchant_id: "ceb700d2-a8c6-4db1-a5ae-f7742124b457",
-        amount: amount,
-        currency: "MNT",
-        mcc_code: "7994",
-        callback_url:
-          "https://unmanipulatable-pleasable-jamey.ngrok-free.dev/member/notify",
-        description: "Member account top up",
-        bank_accounts: [
-          {
-            account_bank_code: "050000",
-            account_number: "5007413164",
-            account_name: "Чойжил Содномдагва",
-            is_default: false,
-          },
-        ],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.qpayToken}`,
-        },
-      }
-    );
+//     // Call QPay API
+//     const response = await axios.post(
+//       "https://quickqr.qpay.mn/v2/invoice",
+//       {
+//         merchant_id: "ceb700d2-a8c6-4db1-a5ae-f7742124b457",
+//         amount: amount,
+//         currency: "MNT",
+//         mcc_code: "7994",
+//         callback_url:
+//           "https://unmanipulatable-pleasable-jamey.ngrok-free.dev/member/notify",
+//         description: "Member account top up",
+//         bank_accounts: [
+//           {
+//             account_bank_code: "050000",
+//             account_number: "5007413164",
+//             account_name: "Чойжил Содномдагва",
+//             is_default: false,
+//           },
+//         ],
+//       },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${process.env.qpayToken}`,
+//         },
+//       }
+//     );
 
 
-    // Save to MongoDB
-    const newInvoice = await InvoiceModel.create({
-  id: response.data.id,
-  amount: response.data.amount,
-  qr_code: response.data.qr_code,
-  invoice_status: response.data.invoice_status,
-  topup_ids: topup_ids,
-});
+//     // Save to MongoDB
+//     const newInvoice = await InvoiceModel.create({
+//   id: response.data.id,
+//   amount: response.data.amount,
+//   qr_code: response.data.qr_code,
+//   invoice_status: response.data.invoice_status,
+//   topup_ids: topup_ids,
+// });
 
-    res.status(200).json(response.data);
-  } catch (err) {
-    if (err.response) {
-      // Axios got a response from server, but status != 2xx
-      console.error("QPay Error:", err.response.data);
-      return res.status(err.response.status).json(err.response.data);
-    } else {
-      // Network error or request setup error
-      console.error("Network Error:", err.message);
-      return res.status(500).json({ error: err.message });
-    }
-  }
+//     res.status(200).json(response.data);
+//   } catch (err) {
+//     if (err.response) {
+//       // Axios got a response from server, but status != 2xx
+//       console.error("QPay Error:", err.response.data);
+//       return res.status(err.response.status).json(err.response.data);
+//     } else {
+//       // Network error or request setup error
+//       console.error("Network Error:", err.message);
+//       return res.status(500).json({ error: err.message });
+//     }
+//   }
 };
 
 export default TopUp;
