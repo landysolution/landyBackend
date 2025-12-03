@@ -13,7 +13,7 @@ const TopUp = async (req, res) => {
         merchant_id: "ceb700d2-a8c6-4db1-a5ae-f7742124b457",
         amount: amount,
         currency: "MNT",
-        mcc_code: 7994,
+        mcc_code: '7994',
         callback_url:
           "https://unmanipulatable-pleasable-jamey.ngrok-free.dev/member/notify",
         description: "Member account top up",
@@ -34,13 +34,13 @@ const TopUp = async (req, res) => {
     );
 
     // Save to MongoDB
-    // const newInvoice = await InvoiceModel.create({
-    //   id: data.id,
-    //   amount: data.amount,
-    //   qr_code: data.qr_code,
-    //   invoice_status: data.invoice_status,
-    //   topup_ids: topup_ids,
-    // });
+    const newInvoice = await InvoiceModel.create({
+  id: response.data.id,
+  amount: response.data.amount,
+  qr_code: response.data.qr_code,
+  invoice_status: response.data.invoice_status,
+  topup_ids: topup_ids,
+});
 
     res.status(200).json({ success: true, invoice: response.data });
   } catch (err) {
