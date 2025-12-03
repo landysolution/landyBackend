@@ -32,7 +32,7 @@ const TopUp = async (req, res) => {
         },
       }
     );
-console.log(response);
+
 
     // Save to MongoDB
     const newInvoice = await InvoiceModel.create({
@@ -43,7 +43,7 @@ console.log(response);
   topup_ids: topup_ids,
 });
 
-    res.status(200).json({ success: true, invoice: response.data });
+    res.status(200).json( data = response.data);
   } catch (err) {
     if (err.response) {
       // Axios got a response from server, but status != 2xx
