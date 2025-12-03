@@ -1,8 +1,5 @@
-import InvoiceModel from '../../model/invoiceModel.js'
+import InvoiceModel from "../../model/invoiceModel.js";
 import axios from "axios";
-
-
-
 
 // --- TopUp Function ---
 const TopUp = async (req, res) => {
@@ -47,8 +44,15 @@ const TopUp = async (req, res) => {
 
     res.status(200).json({ success: true, invoice: response.data });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: err.message });
+    if (err.response) {
+      // Axios got a response from server, but status != 2xx
+      console.error("QPay Error:", err.response.data);
+      return res.status(err.response.status).json(err.response.data);
+    } else {
+      // Network error or request setup error
+      console.error("Network Error:", err.message);
+      return res.status(500).json({ error: err.message });
+    }
   }
 };
 
