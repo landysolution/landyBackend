@@ -20,8 +20,8 @@ const TopUp = async (req, res) => {
         bank_accounts: [
           {
             account_bank_code: "050000",
-            account_number: "5030665850",
-            account_name: "Нямсамбуу Чойжил",
+            account_number: "5007413164",
+            account_name: "Чойжил Содномдагва",
             is_default: false,
           },
         ],
