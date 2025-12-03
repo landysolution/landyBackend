@@ -1,9 +1,55 @@
-const TopUp = (req,res) =>{
+import InvoiceModel from '../../model/invoiceModel.js'
+import axios from "axios";
 
- console.log("=== QPay Callback Received ===");
-  console.log("Method:", req.method);
-  console.log("Headers:", req.headers);
-  console.log("Body:", req.body);
-  res.status(200).send("OK");
-}
-export default TopUp
+
+
+
+// --- TopUp Function ---
+const TopUp = async (req, res) => {
+  try {
+    const { amount, topup_ids } = req.body;
+
+    // Call QPay API
+    const { data } = await axios.post(
+      "https://quickqr.qpay.mn/v2/invoice",
+      {
+        merchant_id: "ceb700d2-a8c6-4db1-a5ae-f7742124b457",
+        amount: amount,
+        currency: "MNT",
+        mcc_code: 7994,
+        callback_url:
+          "https://unmanipulatable-pleasable-jamey.ngrok-free.dev/member/notify",
+        description: "Member account top up",
+        bank_accounts: [
+          {
+            account_bank_code: "050000",
+            account_number: "5030665850",
+            account_name: "Нямсамбуу Чойжил",
+            is_default: false,
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.qpayToken}`,
+        },
+      }
+    );
+
+    // Save to MongoDB
+    // const newInvoice = await InvoiceModel.create({
+    //   id: data.id,
+    //   amount: data.amount,
+    //   qr_code: data.qr_code,
+    //   invoice_status: data.invoice_status,
+    //   topup_ids: topup_ids,
+    // });
+
+    res.status(200).json({ success: true, invoice: data });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+export default TopUp;
