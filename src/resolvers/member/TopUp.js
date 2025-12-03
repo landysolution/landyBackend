@@ -43,7 +43,7 @@ const TopUp = async (req, res) => {
   topup_ids: topup_ids,
 });
 
-    res.status(200).json( data = response.data);
+    res.status(200).json(response);
   } catch (err) {
     if (err.response) {
       // Axios got a response from server, but status != 2xx
