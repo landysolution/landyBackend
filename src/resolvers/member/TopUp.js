@@ -4,13 +4,23 @@ import axios from "axios";
 const TopUp = async (req, res) => {
   try {
     const { amount, topup_ids } = req.body;
-    const bank = req.bank
+    const bank = req.bank;
     const existingInvoice = await InvoiceModel.findOne({
       topup_ids,
       invoice_status: "OPEN",
     });
-     if (existingInvoice) {
-      return res.status(200).json(existingInvoice.toObject()); 
+    if (existingInvoice) {
+      // return res.status(200).json(existingInvoice.toObject());
+      const { data } = await axios.get(
+        `https://quickqr.qpay.mn/v2/invoice/${invoice.invoiceId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.qpayToken}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      return res.status(200).json(data.qr_code);
     }
 
     // Call QPay API
@@ -21,8 +31,7 @@ const TopUp = async (req, res) => {
         amount: amount,
         currency: "MNT",
         mcc_code: "7994",
-        callback_url:
-          `https://api.landy.mn/member/notify?invoiceId`,
+        callback_url: `https://api.landy.mn/member/notify?invoiceId`,
         description: "Member account top up",
         bank_accounts: [
           {
@@ -47,7 +56,7 @@ const TopUp = async (req, res) => {
       invoiceId: response.data.id,
     });
 
-    res.status(200).json(newInvoice.toObject());
+    res.status(200).json(response.data.qr_code);
   } catch (err) {
     if (err.response) {
       console.error("QPay Error:", err.response.data);
@@ -57,7 +66,6 @@ const TopUp = async (req, res) => {
     console.error("Network Error:", err.message);
     return res.status(500).json({ error: err.message });
   }
-
 };
 
 export default TopUp;
