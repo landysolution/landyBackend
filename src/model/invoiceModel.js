@@ -2,9 +2,6 @@ import mongoose from "mongoose";
 
 const invoiceSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
-  qr_code: { type: String, required: true },
-
-  deeplink: { type: String, required: true },
   invoiceId: { type: String, required: true },
   invoice_status: {
     type: String,

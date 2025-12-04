@@ -8,7 +8,7 @@ const getInvoice = async (req, res) => {
     // 1. Find existing invoice
     const invoice = await InvoiceModel.findOne({
       topup_ids: userId,
-      invoice_status: "OPEN", // optional: only get open invoices
+      invoice_status: "OPEN", 
     });
 
     if (!invoice) {

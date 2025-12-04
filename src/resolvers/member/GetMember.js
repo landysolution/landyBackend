@@ -16,15 +16,17 @@ const GetMember = async (req, res) => {
     if (data.data.member === null) {
       return res.status(404).json({ error: "User not found" });
     }
-    // const filtered = data.data.member.map((m) => ({
-    //   member_account: m.member_account,
-    //   member_id: m.member_id,
-    //   member_balance: m.member_balance,
-    //   member_phone: m.member_phone,
-    // }));
+    const filtered = data.member.map((m) => ({
+      member_account: m.member_account,
+      member_id: m.member_id,
+      member_balance: m.member_balance,
+      member_phone: m.member_phone,
+    }));
 
-    // return res.json(filtered);
-    return res.json(data.data.member)
+
+    return res.json(filtered);
+    
+
   } catch (err) {
     console.log(err);
   }
