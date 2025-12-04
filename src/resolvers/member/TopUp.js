@@ -10,7 +10,7 @@ const TopUp = async (req, res) => {
       invoice_status: "OPEN",
     });
      if (existingInvoice) {
-      return res.status(200).json(existingInvoice.data); 
+      return res.status(200).json(existingInvoice.toObject()); 
     }
 
     // Call QPay API
