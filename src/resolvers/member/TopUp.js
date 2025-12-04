@@ -39,7 +39,6 @@ const TopUp = async (req, res) => {
       qr_code: response.data.qr_code,
       invoice_status: response.data.invoice_status,
       topup_ids: topup_ids,
-      deeplink: response.data.urls[1].deeplink,
       invoiceId : response.data.id
     });
 
