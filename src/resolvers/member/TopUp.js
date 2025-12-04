@@ -39,19 +39,19 @@ const TopUp = async (req, res) => {
       qr_code: response.data.qr_code,
       invoice_status: response.data.invoice_status,
       topup_ids: topup_ids,
+      deeplink: response.data.urls[1].deeplink,
+      invoiceId : response.data.id
     });
 
     res.status(200).json(response.data);
   } catch (err) {
     if (err.response) {
-      // Axios got a response from server, but status != 2xx
       console.error("QPay Error:", err.response.data);
       return res.status(err.response.status).json(err.response.data);
-    } else {
-      // Network error or request setup error
-      console.error("Network Error:", err.message);
-      return res.status(500).json({ error: err.message });
     }
+
+    console.error("Network Error:", err.message);
+    return res.status(500).json({ error: err.message });
   }
 };
 
