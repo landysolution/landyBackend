@@ -5,7 +5,7 @@ import { invoiceMock } from "../../mock/invoiceMock.js";
 const TopUp = async (req, res) => {
   try {
     const { amount, topup_ids } = req.body;
-    const invoice_status = await InvoiceModel.findOne({
+    const existingOpenInvoice = await InvoiceModel.findOne({
       topup_ids,
       invoice_status: "OPEN",
     });
@@ -27,8 +27,8 @@ const TopUp = async (req, res) => {
         bank_accounts: [
           {
             account_bank_code: "050000",
-            account_number: "5030665850",
-            account_name: "Нямсамбуу Чойжил ",
+            account_number: "5530268425",
+            account_name: "Тэмүүлэн",
             is_default: false,
           },
         ],
