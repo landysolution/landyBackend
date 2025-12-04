@@ -33,15 +33,13 @@ const TopUp = async (req, res) => {
       }
     );
 
-
-    // Save to MongoDB
-//     const newInvoice = await InvoiceModel.create({
-//   id: response.data.id,
-//   amount: response.data.amount,
-//   qr_code: response.data.qr_code,
-//   invoice_status: response.data.invoice_status,
-//   topup_ids: topup_ids,
-// });
+    const newInvoice = await InvoiceModel.create({
+      id: response.data.id,
+      amount: response.data.amount,
+      qr_code: response.data.qr_code,
+      invoice_status: response.data.invoice_status,
+      topup_ids: topup_ids,
+    });
 
     res.status(200).json(response.data);
   } catch (err) {
