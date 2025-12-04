@@ -5,7 +5,7 @@ import axios from "axios";
 const TopUp = async (req, res) => {
   try {
     const { amount, topup_ids } = req.body;
-    const invoice_status = await InvoiceModel.findOne({
+    const existingOpenInvoice = await InvoiceModel.findOne({
       topup_ids,
       invoice_status: "OPEN",
     });
