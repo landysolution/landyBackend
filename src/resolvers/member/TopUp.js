@@ -46,7 +46,7 @@ const TopUp = async (req, res) => {
       invoice_status: response.data.invoice_status,
       topup_ids: topup_ids,
       invoiceId: response.data.id,
-      deeplink: response.data.urls[0].link
+      deeplink: response.data.urls[1].link
     });
 
     res.status(200).json(newInvoice.toObject());
