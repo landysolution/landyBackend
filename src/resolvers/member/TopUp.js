@@ -1,6 +1,6 @@
 import InvoiceModel from "../../model/invoiceModel.js";
 import axios from "axios";
-
+import { invoiceMock } from "../../mock/invoiceMock.js";
 // --- TopUp Function ---
 const TopUp = async (req, res) => {
   try {
@@ -9,11 +9,8 @@ const TopUp = async (req, res) => {
       topup_ids,
       invoice_status: "OPEN",
     });
-    if (existingOpenInvoice) {
-      return res.status(400).json({
-        error: "User already has an OPEN invoice",
-        invoice: existingOpenInvoice,
-      });
+     if (existingInvoice) {
+      return res.status(200).json(existingInvoice); 
     }
 
     // Call QPay API
@@ -62,6 +59,7 @@ const TopUp = async (req, res) => {
     console.error("Network Error:", err.message);
     return res.status(500).json({ error: err.message });
   }
+
 };
 
 export default TopUp;
