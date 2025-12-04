@@ -5,6 +5,16 @@ import axios from "axios";
 const TopUp = async (req, res) => {
   try {
     const { amount, topup_ids } = req.body;
+    const invoice_status = await InvoiceModel.findOne({
+      topup_ids,
+      invoice_status: "OPEN",
+    });
+    if (existingOpenInvoice) {
+      return res.status(400).json({
+        error: "User already has an OPEN invoice",
+        invoice: existingOpenInvoice,
+      });
+    }
 
     // Call QPay API
     const response = await axios.post(
@@ -39,7 +49,7 @@ const TopUp = async (req, res) => {
       qr_code: response.data.qr_code,
       invoice_status: response.data.invoice_status,
       topup_ids: topup_ids,
-      invoiceId : response.data.id
+      invoiceId: response.data.id,
     });
 
     res.status(200).json(response.data);
