@@ -41,7 +41,6 @@ const TopUp = async (req, res) => {
     );
 
     const newInvoice = await InvoiceModel.create({
-      id: response.data.id,
       amount: response.data.amount,
       qr_code: response.data.qr_code,
       invoice_status: response.data.invoice_status,
@@ -50,7 +49,7 @@ const TopUp = async (req, res) => {
       deeplink: response.data.urls[0].link
     });
 
-    res.status(200).json(response.data);
+    res.status(200).json(newInvoice.toObject());
   } catch (err) {
     if (err.response) {
       console.error("QPay Error:", err.response.data);

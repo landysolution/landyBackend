@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const invoiceSchema = new mongoose.Schema({
-  id: { type: String, required: true },
   amount: { type: Number, required: true },
   qr_code: { type: String, required: true },
 
