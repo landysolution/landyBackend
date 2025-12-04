@@ -1,11 +1,11 @@
 import InvoiceModel from "../../model/invoiceModel.js";
 import axios from "axios";
-import { invoiceMock } from "../../mock/invoiceMock.js";
 // --- TopUp Function ---
 const TopUp = async (req, res) => {
   try {
     const { amount, topup_ids } = req.body;
-    const existingOpenInvoice = await InvoiceModel.findOne({
+    const bank = req.bank
+    const existingInvoice = await InvoiceModel.findOne({
       topup_ids,
       invoice_status: "OPEN",
     });
@@ -22,13 +22,13 @@ const TopUp = async (req, res) => {
         currency: "MNT",
         mcc_code: "7994",
         callback_url:
-          "https://unmanipulatable-pleasable-jamey.ngrok-free.dev/member/notify",
+          `https://api.landy.mn/member/notify?invoiceId`,
         description: "Member account top up",
         bank_accounts: [
           {
-            account_bank_code: "050000",
-            account_number: "5530268425",
-            account_name: "Тэмүүлэн",
+            account_bank_code: bank.bank_code,
+            account_number: bank.account_number,
+            account_name: bank.account_name,
             is_default: false,
           },
         ],
@@ -47,6 +47,7 @@ const TopUp = async (req, res) => {
       invoice_status: response.data.invoice_status,
       topup_ids: topup_ids,
       invoiceId: response.data.id,
+      deeplink: response.data.urls[0].link
     });
 
     res.status(200).json(response.data);
