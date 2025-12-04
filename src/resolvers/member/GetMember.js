@@ -24,7 +24,7 @@ const GetMember = async (req, res) => {
     // }));
 
     // return res.json(filtered);
-    return res.json(data.member)
+    return res.json(data.data.member)
   } catch (err) {
     console.log(err);
   }
