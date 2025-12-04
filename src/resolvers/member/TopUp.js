@@ -1,6 +1,6 @@
 import InvoiceModel from "../../model/invoiceModel.js";
 import axios from "axios";
-// --- TopUp Function ---
+
 const TopUp = async (req, res) => {
   try {
     const { amount, topup_ids } = req.body;
@@ -42,11 +42,9 @@ const TopUp = async (req, res) => {
 
     const newInvoice = await InvoiceModel.create({
       amount: response.data.amount,
-      qr_code: response.data.qr_code,
       invoice_status: response.data.invoice_status,
       topup_ids: topup_ids,
       invoiceId: response.data.id,
-      deeplink: response.data.urls[1].link
     });
 
     res.status(200).json(newInvoice.toObject());
