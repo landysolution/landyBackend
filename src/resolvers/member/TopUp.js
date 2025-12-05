@@ -3,10 +3,9 @@ import axios from "axios";
 
 const TopUp = async (req, res) => {
   try {
-
     const bank = req.bank;
     const topup_ids = req.topup_ids;
-
+    const amount = req.amount;
     const response = await axios.post(
       "https://quickqr.qpay.mn/v2/invoice",
       {

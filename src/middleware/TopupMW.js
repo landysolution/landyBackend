@@ -17,7 +17,7 @@ const TopupMW = async (req, res, next) => {
     });
   }
 
-  const { cafeId } = result.data;
+  const { cafeId,topup_ids,amount} = result.data;
 
   const bank = await BankModel.findOne({ id: cafeId });
 
@@ -28,6 +28,7 @@ const TopupMW = async (req, res, next) => {
   req.bank = bank;
   req.cafeId = cafeId;
   req.topup_ids = topup_ids;
+  req.amount = amount
 
   next();
 };
