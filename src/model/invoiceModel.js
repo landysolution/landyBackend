@@ -8,6 +8,7 @@ const invoiceSchema = new mongoose.Schema({
     enum: ["OPEN", "PAID", "EXPIRED", "CANCELLED"],
     default: "OPEN",
   },
+  qr: { type: String, required: true },
 
   topup_ids: { type: String, required: true },
 });

@@ -11,5 +11,5 @@ route.get("/", GetMember);
 route.post("/topup", TopupMW, TopUp);
 route.post("/notify", CallBack);
 route.post("/bank", postBank);
-route.post("/check",getInvocie)
+// route.post("/check",getInvocie)
 export default route;
