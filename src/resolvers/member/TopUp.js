@@ -56,7 +56,7 @@ const TopUp = async (req, res) => {
       invoice_status: response.data.invoice_status,
       topup_ids,
       invoiceId: response.data.id,
-      qr: response.data.qr_code,
+      qr_code: response.data.qr_code,
     });
 
     return res.json(newInvoice);
