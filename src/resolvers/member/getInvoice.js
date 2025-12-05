@@ -1,24 +1,35 @@
 import axios from "axios";
-import invoiceModel from '../../model/invoiceModel.js';
+import InvoiceModel from "../../model/invoiceModel.js";
 
 const getInvoice = async (req, res) => {
   try {
     const { user } = req.body;
     const userId = String(user);
 
-    // 1. Check open invoice in DB
-    const userInvoice = await invoiceModel.findOne({
+    // ---- 1. Find existing OPEN invoice ----
+    let invoice = await InvoiceModel.findOne({
       topup_ids: userId,
       invoice_status: "OPEN",
     });
 
-    if (!userInvoice) {
+    if (!invoice) {
       return res.json({ ok: false, message: "No active invoice" });
     }
 
-    // 2. Fetch invoice info from QPay
+    // ---- 2. Check if invoice is expired (3 minutes) ----
+    const now = Date.now();
+    const created = invoice.createdAt.getTime();
+    const diffMinutes = (now - created) / (1000 * 60);
+
+    if (diffMinutes >= 3) {
+      invoice.invoice_status = "EXPIRED";
+      await invoice.save();
+      return res.json({ ok: false, message: "Invoice expired" });
+    }
+
+    // ---- 3. Fetch invoice info from QPay ----
     const { data } = await axios.get(
-      `https://quickqr.qpay.mn/v2/invoice/${userInvoice.invoiceId}`,
+      `https://quickqr.qpay.mn/v2/invoice/${invoice.invoiceId}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.qpayToken}`,
@@ -29,7 +40,7 @@ const getInvoice = async (req, res) => {
 
     return res.json({ ok: true, invoice: data });
   } catch (err) {
-    console.log("QPay error:", err.response?.data || err.message);
+    console.error("QPay error:", err.response?.data || err.message);
     return res.status(500).json(err.response?.data || { error: err.message });
   }
 };
