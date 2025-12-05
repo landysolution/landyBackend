@@ -6,19 +6,20 @@ const TopUp = async (req, res) => {
     const { bank, topup_ids, amount } = req;
 
     // ---- 1. Find existing invoice ----
-    const existing = await InvoiceModel.findOne({ topup_ids, amount });
+    const existing = await InvoiceModel.findOne({
+      topup_ids,
+      amount,
+      invoice_status: { $ne: "PAID" }
+    });
 
     if (existing) {
       const now = Date.now();
       const created = new Date(existing.createdAt).getTime();
-
       const diffMinutes = (now - created) / (1000 * 60);
 
-      // If invoice is still fresh (under 13 minutes) & not paid
-      if (diffMinutes < 13 && existing.invoice_status !== "PAID") {
+      if (diffMinutes < 5) {
         return res.json({
           reused: true,
-          message: "Using existing active invoice",
           invoice: existing,
         });
       }
@@ -32,15 +33,14 @@ const TopUp = async (req, res) => {
         amount,
         currency: "MNT",
         mcc_code: "7994",
-        callback_url: `https://api.landy.mn/member/notify?invoiceId`,
-        description: "Member account top up",
+        callback_url: `https://api.landy.mn/member/notify`,
+        description: `Top-up for user ${topup_ids}`,
         bank_accounts: [
           {
             account_bank_code: bank.bank_code,
             account_number: bank.account_number,
             account_name: bank.account_name,
-            is_default: false,
-          },
+          }
         ],
       },
       {
@@ -50,23 +50,20 @@ const TopUp = async (req, res) => {
       }
     );
 
+    // ---- 3. Save to DB ----
     const newInvoice = await InvoiceModel.create({
-      amount: response.data.amount,
+      amount,
       invoice_status: response.data.invoice_status,
       topup_ids,
       invoiceId: response.data.id,
-      qr: response.data.qr_code
+      qr: response.data.qr_code,
     });
 
-    return res.status(200).json(newInvoice);
-  } catch (err) {
-    if (err.response) {
-      console.error("QPay Error:", err.response.data);
-      return res.status(err.response.status).json(err.response.data);
-    }
+    return res.json(newInvoice);
 
-    console.error("Network Error:", err.message);
-    return res.status(500).json({ error: err.message });
+  } catch (err) {
+    console.log("QPay Error:", err.response?.data || err.message);
+    return res.status(500).json(err.response?.data || err);
   }
 };
 
