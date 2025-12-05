@@ -3,27 +3,10 @@ import axios from "axios";
 
 const TopUp = async (req, res) => {
   try {
-    const { amount, topup_ids } = req.body;
-    const bank = req.bank;
-    const existingInvoice = await InvoiceModel.findOne({
-      topup_ids,
-      invoice_status: "OPEN",
-    });
-    if (existingInvoice) {
-      // return res.status(200).json(existingInvoice.toObject());
-      const { data } = await axios.get(
-        `https://quickqr.qpay.mn/v2/invoice/${invoice.invoiceId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.qpayToken}`,
-            Accept: "application/json",
-          },
-        }
-      );
-      return res.status(200).json(data.qr_code);
-    }
 
-    // Call QPay API
+    const bank = req.bank;
+    const topup_ids = req.topup_ids;
+
     const response = await axios.post(
       "https://quickqr.qpay.mn/v2/invoice",
       {
@@ -56,7 +39,7 @@ const TopUp = async (req, res) => {
       invoiceId: response.data.id,
     });
 
-    res.status(200).json(response.data.qr_code);
+    res.status(200).json(response.data);
   } catch (err) {
     if (err.response) {
       console.error("QPay Error:", err.response.data);

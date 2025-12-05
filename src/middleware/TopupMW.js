@@ -17,9 +17,7 @@ const TopupMW = async (req, res, next) => {
     });
   }
 
-
   const { cafeId } = result.data;
-
 
   const bank = await BankModel.findOne({ id: cafeId });
 
@@ -27,8 +25,9 @@ const TopupMW = async (req, res, next) => {
     return res.status(404).json({ error: "Bank account not found" });
   }
 
- 
   req.bank = bank;
+  req.cafeId = cafeId;
+  req.topup_ids = topup_ids;
 
   next();
 };

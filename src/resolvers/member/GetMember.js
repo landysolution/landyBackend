@@ -17,7 +17,6 @@ const GetMember = async (req, res) => {
 
     const member = response.data?.data?.member;
 
-    // ❌ no user found
     if (!member) {
       return res.status(404).json({ error: "User not found" });
     }
