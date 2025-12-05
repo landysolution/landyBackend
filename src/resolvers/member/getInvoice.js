@@ -18,7 +18,7 @@ const getInvoice = async (req, res) => {
 
     // 2. Fetch invoice info from QPay
     const { data } = await axios.get(
-      `https://sandbox-quickqr.qpay.mn/v2/invoice/${userInvoice.invoiceId}`,
+      `https://quickqr.qpay.mn/v2/invoice/${userInvoice.invoiceId}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.qpayToken}`,
