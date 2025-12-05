@@ -3,7 +3,7 @@ import axios from "axios";
 
 const TopUp = async (req, res) => {
   try {
-    const { bank, topup_ids, amount } = req.body; // extract from body
+    const { bank, topup_ids, amount } = req
 
     // ---- 1. Check for existing OPEN invoice ----
     let existing = await InvoiceModel.findOne({
