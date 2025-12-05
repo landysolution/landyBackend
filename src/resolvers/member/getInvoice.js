@@ -2,13 +2,11 @@ import axios from "axios";
 
 const getInvocie = async (req, res) => {
   const { invoiceId } = req.body;
+  const invoice = String(invoiceId)
 
   try {
     const { data } = await axios.post(
-      "https://quickqr.qpay.mn/v2/payment/check",
-      {
-        invoice_id: invoiceId, // <-- Body MUST be second argument
-      },
+      `https://sandbox-quickqr.qpay.mn/v2/invoice/${invoice}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.qpayToken}`,
