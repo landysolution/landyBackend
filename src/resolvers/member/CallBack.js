@@ -1,8 +1,9 @@
 const CallBack = (req, res) => {
   console.log("res from qpay");
-  const { invoiceId } = req.query;
-  console.log(invoiceId);
+const data = req.body
+console.log("[QPay Callback] Received:", data);
 
-  console.log("res from qpay");
+  
+  return res.status(200).json('ok')
 };
 export default CallBack;

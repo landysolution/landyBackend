@@ -11,7 +11,7 @@ axios.interceptors.request.use(request => {
   console.log("Outgoing request:");
   console.log("URL:", request.url);
   console.log("Method:", request.method);
-  console.log("Headers:", request.headers);
+
   return request;
 });
     const response = await axios.get(
