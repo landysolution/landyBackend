@@ -17,7 +17,7 @@ const TopUp = async (req, res) => {
       const diffMs = now - created;
       const diffMinutes = diffMs / (1000 * 60);
 
-      if (diffMinutes < 5) {
+      if (diffMinutes < 3) {
         console.log(`[TopUp] Reusing existing invoice ${existing.invoiceId}`);
         return res.json({
           reused: true,
