@@ -8,8 +8,12 @@ import SteamRoute from "./route/SteamRoute.js";
 import UserRoute from "./route/UserRoute.js";
 import cookieParser from "cookie-parser";
 import memberRoute from './route/MemberRoute.js'
+import http from 'http'
+import { initWebSocket } from "./ws/wsServer.js";
 dotenv.config();
 const app = express();
+const server = http.createServer(app);
+initWebSocket(server);
 preloadCafeCache();
 app.use(express.json());
 app.use(cookieParser());

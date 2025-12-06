@@ -1,5 +1,5 @@
 import InvoiceModel from "../../model/invoiceModel.js";
-
+import { notifyUser } from "../../ws/wsServer.js";
 const CallBack = async (req, res) => {
   try {
     const { invoiceId, token } = req.query;
@@ -21,6 +21,7 @@ const CallBack = async (req, res) => {
 
     invoice.invoice_status = "PAID";
     await invoice.save();
+    notifyUser(invoice.topup_ids, { invoiceId: invoice.invoiceId, status: "PAID" });
 
     return res.status(200).json({ ok: true });
   } catch (err) {
