@@ -8,6 +8,6 @@ const route = express.Router();
 
 route.get("/", GetMember);
 route.post("/topup", TopupMW, TopUp);
-router.post("/notify", CallBack);
+route.post("/notify", CallBack);
 route.post("/check", getInvocie);
 export default route;
