@@ -39,4 +39,4 @@ app.use("/steam", SteamRoute);
 app.use("/auth", UserRoute);
 app.use('/member',memberRoute)
 const PORT = process.env.PORT;
-app.listen(PORT, () => console.log("app is running on", PORT));
+server.listen(PORT, () => console.log("app is running on", PORT));
