@@ -2,28 +2,25 @@ import InvoiceModel from "../../model/invoiceModel.js";
 
 const CallBack = async (req, res) => {
   try {
-    const { invoiceId, amount, topup_ids } = req.query;
+    const { invoiceId, token } = req.query;
 
-    console.log("Callback received from QPay");
-    console.log("Query data:", req.query);
-
-    // Find the invoice
-    const invoice = await InvoiceModel.findOne({
-      topup_ids,
-      amount,
-      invoice_status: "OPEN",
-    });
-
-    if (!invoice) {
-      console.log("No matching open invoice found");
-      return res.status(404).json({ error: "Invoice not found" });
+    // Verify token first
+    if (token !== process.env.QPAY_CALLBACK_SECRET) {
+      return res.status(403).json({ error: "Forbidden" });
     }
 
-    // Update invoice status to PAID
-    invoice.invoice_status = "PAID";
-    await invoice.save(); // <-- Important: save the change
+    // Now safely find the invoice
+    const invoice = await InvoiceModel.findOne({
+      invoiceId,
+      invoice_status: "OPEN",
+    });
+    if (!invoice)
+      return res
+        .status(404)
+        .json({ error: "Invoice not found or already processed" });
 
-    console.log(`Invoice ${invoice.invoiceId} marked as PAID`);
+    invoice.invoice_status = "PAID";
+    await invoice.save();
 
     return res.status(200).json({ ok: true });
   } catch (err) {
