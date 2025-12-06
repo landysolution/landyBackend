@@ -40,7 +40,7 @@ const TopUp = async (req, res) => {
         amount,
         currency: "MNT",
         mcc_code: "7994",
-        callback_url: `https://api.landy.mn/member/notify`,
+        callback_url: `https://api.landy.mn/member/notify?topup_ids=${topup_ids}&amount=${amount}`,
         description: `Top-up for user ${topup_ids}`,
         bank_accounts: [
           {
