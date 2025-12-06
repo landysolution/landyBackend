@@ -1,9 +1,14 @@
 const CallBack = (req, res) => {
-  console.log("res from qpay");
-const data = req.body
-console.log("[QPay Callback] Received:", data);
+  console.log(" Callback received from QPay");
 
-  
-  return res.status(200).json('ok')
+  const raw = req.body;
+  console.log("Raw body:", raw);
+
+ 
+  console.log("Parsed callback:", data);
+
+  // MUST RESPOND 200 or QPay will retry
+  return res.status(200).json("ok");
 };
+
 export default CallBack;
